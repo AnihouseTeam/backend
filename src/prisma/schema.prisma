@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://tima:e5IMJtfq5IPe6W@localhost:5432/anihouse?schema=public"
+}
+
+model Movie {
+  id               Int                @id @default(autoincrement())
+  title            String
+  description      String
+  poster           String?
+  banner           String?
+  genres           GenresOnMovies[]
+  type             MovieType          @relation(fields: [typeId], references: [id])
+  typeId           Int
+  created          DateTime           @default(now())
+  visible          Boolean            @default(true)
+  deleted          Boolean            @default(false)
+  dabbers          String[] // MovieDubbers[]
+  techies          String[] // MovieTechies[]
+  translators      String[] // MovieTranslators[]
+  episodes         Episode[]
+  episodesTotal    Int?
+  carouselPosition Int?
+  // comments    Comment[]
+}
+
+model Episode {
+  id      Int    @id @default(autoincrement())
+  movie   Movie  @relation(fields: [movieId], references: [id])
+  movieId Int
+  players Json
+  created DateTime @default(now())
+}
+
+model MovieType {
+  id      Int    @id @default(autoincrement())
+  name    String
+  movies  Movie[]
+}
+
+model Genre {
+  id      Int    @id @default(autoincrement())
+  name    String
+  movies  GenresOnMovies[]
+}
+
+model GenresOnMovies {
+  movie   Movie   @relation(fields: [movieId], references: [id])
+  movieId Int
+  genre   Genre   @relation(fields: [genreId], references: [id])
+  genreId Int
+
+  @@id([movieId, genreId])
+}
+
+model Team {
+  id          Int    @id @default(autoincrement())
+  name        String
+  role        String
+  description String
+  avatar      String
+  vk          String?
+}
+
+// model User {
+//   id           Int                @id @default(autoincrement())
+//   username     String
+//   comments     Comment[]
+//   dabberIn     MovieDubbers[]
+//   techieIn     MovieTechies[]
+//   translatorIn MovieTranslators[]
+// }
+
+// model Comment {
+//   id       Int       @id @default(autoincrement())
+//   movie    Movie     @relation(fields: [movieId], references: [id])
+//   movieId  Int
+//   author   User      @relation(fields: [authorId], references: [id])
+//   authorId Int
+//   parent   Comment?  @relation("ChildToParent", fields: [parentId], references: [id])
+//   parentId Int?
+//   children Comment[] @relation("ChildToParent")
+//   content  String
+// }
+
+model FAQ {
+  id       Int    @id @default(autoincrement())
+  question String
+  answer   String
+}
+
+// Join Databases
+
+// model MovieDubbers {
+//   movie   Movie @relation(fields: [movieId], references: [id])
+//   movieId Int
+//   user    User  @relation(fields: [userId], references: [id])
+//   userId  Int
+
+//   @@id([movieId, userId])
+// }
+
+// model MovieTechies {
+//   movie   Movie @relation(fields: [movieId], references: [id])
+//   movieId Int
+//   user    User  @relation(fields: [userId], references: [id])
+//   userId  Int
+
+//   @@id([movieId, userId])
+// }
+
+// model MovieTranslators {
+//   movie   Movie @relation(fields: [movieId], references: [id])
+//   movieId Int
+//   user    User  @relation(fields: [userId], references: [id])
+//   userId  Int
+
+//   @@id([movieId, userId])
+// }
