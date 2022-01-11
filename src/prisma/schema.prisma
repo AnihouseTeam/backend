@@ -13,6 +13,8 @@ model Movie {
   description      String
   poster           String?
   banner           String?
+  year             Int?
+  age              String?
   genres           GenresOnMovies[]
   type             MovieType          @relation(fields: [typeId], references: [id])
   typeId           Int

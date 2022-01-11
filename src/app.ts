@@ -15,10 +15,14 @@ app.use((req, res, next) => {
 import movieRoutes from './routes/movie'
 import faqRoutes from './routes/faq'
 import teamRoutes from './routes/team'
+import genreRoutes from './routes/genre'
+import typeRoutes from './routes/type'
 
 app.use('/movie', movieRoutes)
 app.use('/faq', faqRoutes)
 app.use('/team', teamRoutes)
+app.use('/genre', genreRoutes)
+app.use('/type', typeRoutes)
 
 app.listen(3001, '127.0.0.1', () => {
     console.log(`Server listens http://127.0.0.1:3001`)
